@@ -29,6 +29,7 @@ class PollReader():
 
         # read in each line of the file to a list
         self.raw_data = self.file_obj.readlines()
+        
 
         # close the file handler
         self.file_obj.close()
@@ -53,20 +54,20 @@ class PollReader():
         Remember that the first row of a CSV contains all of the column names,
         and each value in a CSV is seperated by a comma.
         """
-
+        
         # iterate through each row of the data
-        for i in self.raw_data:
+        for i in self.raw_data[1:]:
 
             # split up the row by column
-            seperated = i.split(' ')
+            seperated = i.strip().split(',')
 
             # map each part of the row to the correct column
-            self.data_dict['month'].append(seperated[0])
-            self.data_dict['date'].append(int(seperated[1]))
-            self.data_dict['sample'].append(int(seperated[2]))
-            self.data_dict['sample type'].append(seperated[2])
-            self.data_dict['Harris result'].append(float(seperated[3]))
-            self.data_dict['Trump result'].append(float(seperated[4]))
+            self.data_dict['month'] = (seperated[0])
+            self.data_dict['date'] = (int(seperated[1]))
+            self.data_dict['sample'] = (int(seperated[2].split(" ")[0]))
+            self.data_dict['sample type'] = ((seperated[2].split(" ")[1]))
+            self.data_dict['Harris result'] = (float(seperated[3]))
+            self.data_dict['Trump result'] = (float(seperated[4]))
 
 
     def highest_polling_candidate(self):
@@ -80,6 +81,15 @@ class PollReader():
             str: A string indicating the candidate with the highest polling percentage or EVEN,
              and the highest polling percentage.
         """
+        print(self.data_dict['Harris result'])
+        max_harris = None #max(self.data_dict['Harris result'])
+        max_trump =  None #max(self.data_dict['Trump result'])
+        if max_harris > max_trump:
+            return f"Harris {(max_harris * 100):.1f}"
+        elif max_trump > max_harris: 
+            return f"Trump {(max_trump * 100):.1f}"
+        else: 
+            return f"EVEN {(max_trump * 100): .1f}"
         pass
 
 
